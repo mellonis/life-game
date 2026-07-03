@@ -24,12 +24,16 @@
         }
       }
       html, body {
-        height: 100%; margin: 0; overflow: hidden;
+        /* dvh tracks the visible viewport on mobile (100% / innerHeight and vh
+           disagree there once browser toolbars show); fallback for old browsers */
+        height: 100%; height: 100dvh;
+        margin: 0; overflow: hidden;
         background: var(--background); color: var(--foreground);
         font: 14px/1.4 system-ui, sans-serif;
       }
-      #app { height: 100%; }
-      canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; }
+      body { display: flex; flex-direction: column; }
+      #app { flex: 1 1 auto; min-height: 0; }
+      canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
       #panel {
         position: fixed; right: 16px; bottom: 16px;
         background: var(--background);
@@ -71,8 +75,10 @@
       #restart:active { color: color-mix(in srgb, currentColor, var(--link-mix) 50%); }
       #restart:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
       @media (max-width: 600px) {
+        /* panel joins the flex column below #app, so the field stays fully
+           visible instead of running underneath a fixed overlay */
         #panel {
-          left: 0; right: 0; bottom: 0;
+          position: static;
           border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;
         }
         #rules { justify-content: start; }

@@ -5,8 +5,8 @@ const maybeCtx = canvas.getContext("2d");
 if (!maybeCtx) throw new Error("Canvas 2D context not supported");
 const ctx: CanvasRenderingContext2D = maybeCtx;
 
-// One cell per CSS pixel: the field always matches the viewport size.
-const game = new LifeGame(window.innerWidth, window.innerHeight);
+// One cell per CSS pixel: the field always matches the canvas's CSS box.
+const game = new LifeGame(canvas.clientWidth, canvas.clientHeight);
 
 function paint() {
 	const style = getComputedStyle(document.body);
@@ -15,8 +15,11 @@ function paint() {
 }
 
 function resize() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+	// Size the bitmap from the canvas's laid-out CSS box, not window.inner*:
+	// on iOS Safari innerHeight (visible viewport) ≠ 100vh (large viewport),
+	// and any mismatch CSS-stretches cells into ellipses.
+	canvas.width = canvas.clientWidth;
+	canvas.height = canvas.clientHeight;
 	game.resize(canvas.width, canvas.height);
 	// setting canvas.width/height clears the canvas; repaint the preserved field
 	paint();
