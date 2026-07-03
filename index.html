@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LifeGame TypeScript</title>
+    <style>
+      /* palette from mellonis-workspace/site */
+      :root {
+        color-scheme: light dark;
+        --background: #f8f8f6;
+        --foreground: #000;
+        --link-mix: white;
+        --muted-foreground: #5f5f5f;
+        --ripple: #15803d;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --background: #333;
+          --foreground: #e0e0e0;
+          --link-mix: black;
+          --muted-foreground: #b9b9b9;
+          --ripple: #4ade80;
+        }
+      }
+      html, body {
+        height: 100%; margin: 0; overflow: hidden;
+        background: var(--background); color: var(--foreground);
+        font: 14px/1.4 system-ui, sans-serif;
+      }
+      #app { height: 100%; }
+      canvas { display: block; width: 100vw; height: 100vh; image-rendering: pixelated; }
+      #panel {
+        position: fixed; right: 16px; bottom: 16px;
+        background: var(--background);
+        border: 1px solid var(--muted-foreground);
+        border-radius: 2px;
+        padding: 12px;
+        display: grid; gap: 10px;
+        user-select: none;
+      }
+      #presets { display: flex; gap: 6px; }
+      #presets button {
+        flex: 1; font: inherit; font-size: 12px; padding: 2px 0; cursor: pointer;
+        background: transparent;
+        border: 1px solid var(--muted-foreground); border-radius: 2px;
+        transition: all 0.2s ease;
+        color: color-mix(in srgb, currentColor, var(--link-mix) 25%);
+      }
+      #presets button:hover { color: color-mix(in srgb, currentColor, var(--link-mix) 5%); }
+      #presets button.active {
+        background: var(--foreground); color: var(--background);
+        border-color: var(--foreground);
+      }
+      #rules {
+        display: grid; grid-template-columns: auto repeat(9, 22px);
+        gap: 4px 2px; align-items: center; justify-items: center;
+        color: var(--muted-foreground);
+      }
+      #rules .rowlabel { justify-self: start; padding-right: 8px; color: var(--foreground); }
+      #panel input { margin: 0; accent-color: var(--foreground); }
+      .toggle-row { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+      #restart {
+        font: inherit; padding: 4px 12px; cursor: pointer;
+        background: transparent;
+        border: 1px solid var(--muted-foreground); border-radius: 2px;
+        transition: all 0.2s ease;
+        color: color-mix(in srgb, currentColor, var(--link-mix) 25%);
+      }
+      #restart:hover { color: color-mix(in srgb, currentColor, var(--link-mix) 5%); }
+      #restart:active { color: color-mix(in srgb, currentColor, var(--link-mix) 50%); }
+      #restart:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
+      @media (max-width: 600px) {
+        #panel {
+          left: 0; right: 0; bottom: 0;
+          border-radius: 0; border-left: 0; border-right: 0; border-bottom: 0;
+        }
+        #rules { justify-content: start; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="life"></canvas>
+    </div>
+    <div id="panel">
+      <div id="presets"></div>
+      <div id="rules"></div>
+      <label class="toggle-row"><input type="checkbox" id="god" checked /> Random ripples</label>
+      <label class="toggle-row"><input type="checkbox" id="god-hide" /> Hide dot &amp; trail</label>
+      <button type="button" id="restart">Restart</button>
+    </div>
+    <script type="module" src="/ts/main.ts"></script>
+  </body>
+</html>
