@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 env:
-  NODE_VERSION: 24
+  NODE_VERSION: 26
   VPS_STATIC_PATH: /var/web-apps/life-game.mellonis.ru
 
 jobs:
